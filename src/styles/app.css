@@ -1,0 +1,93 @@
+:root {
+  --text: #94a3b8;
+  --background: white;
+  --accent_0: rgba(255, 102, 94, 30%);
+  --accent_1: rgba(255, 72, 176, 45%);
+  --accent_2: rgba(255, 72, 176, 05%);
+  --accent_3: rgba(0, 0, 0, 45%);
+  --accent_4: rgba(0, 0, 0, 10%);
+  --accent_5: rgba(0, 0, 0, 75%);
+  --accent_6: rgba(61, 85, 136, 0.45);
+  --accent_7: rgba(255, 232, 0, 0.5);
+  --accent_8: rgba(61, 85, 136, 0.05);
+}
+.mainContainer {
+  display: grid;
+  grid-template-columns: clamp(430px, 40vw, 50vw) 1fr;
+  height: 100vh;
+  width: 100vw;
+}
+
+.parent {
+  display: grid;
+}
+.left {
+  display: flex;
+  margin: auto;
+  min-width: 430px;
+}
+
+.right {
+  background-color: var(--accent_8);
+  border-left: 2px solid var(--accent_7);
+  border-top: 2px solid var(--accent_1);
+}
+
+.formContainer {
+  background-color: var(--accent_6);
+  padding: 3.5em 2.5em;
+  border-radius: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 5em;
+  width: 350px;
+  box-shadow: -5px -5px var(--accent_1), 5px 5px var(--accent_7);
+}
+
+input {
+  height: 2em;
+  width: 100%;
+  border: none;
+  font-size: 1.3em;
+  border-radius: 5px;
+  text-indent: 0.5em;
+}
+input:focus {
+  outline: none;
+}
+form ::placeholder {
+  color: var(--accent_6);
+  font-family: Karla;
+}
+
+form,
+.formInput {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+button {
+  font-family: Karla;
+  border: none;
+  width: max-content;
+  height: 2em;
+  background-color: #fff;
+  font-size: 1.1em;
+  color: var(--accent_6);
+  border-radius: 10px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 1em;
+  box-shadow: 4px 4px var(--accent_8);
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+}
+.hidden {
+  display: none;
+}
