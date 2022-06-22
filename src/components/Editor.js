@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import Preview from './Preview';
+import Personal from './Personal';
+import Contact from './Contact';
 
 class Editor extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.switchForm = this.switchForm.bind(this);
+
     this.state = {
       firstName: '',
       lastName: '',
@@ -17,6 +21,7 @@ class Editor extends Component {
       city: '',
       formElements: ['personal', 'contact', 'skills', 'education'],
       currentForm: 'personal',
+      nextForm: 'contact',
     };
   }
   handleChange(event) {
@@ -24,57 +29,71 @@ class Editor extends Component {
     this.setState({
       [name]: value,
     });
+    console.log(name, value);
   }
   switchForm(event) {
-    console.log(event.target);
+    console.log(event.target.className);
+    let direction = event.target.value;
+    this.setState({
+      currentForm: 'contact',
+    });
+    console.log(this.state.currentForm);
   }
 
   render() {
+    const displayForm = () => {
+      if (this.state.currentForm === 'personal') {
+        return (
+          <Personal
+            firstName={this.state.firstName}
+            lastName={this.state.lastName}
+            about={this.state.about}
+            title={this.state.topTitle}
+            handleChange={this.handleChange}
+          />
+        );
+      } else if (this.state.currentForm === 'contact') {
+        return (
+          <Contact
+            twitter={this.state.twitter}
+            website={this.state.website}
+            email={this.state.email}
+            mobile={this.state.mobile}
+            city={this.state.city}
+            handleChange={this.handleChange}
+          />
+        );
+      }
+    };
     return (
       <div className="mainContainer">
         <div className="left">
-          <div class="formContainer">
+          <div className="formContainer">
             <form className="form">
-              <div className="formInput">
-                <input
-                  placeholder="First Name"
-                  name="firstName"
-                  value={this.state.firstName}
-                  onChange={this.handleChange}
-                />
-                <input
-                  placeholder="Last Name"
-                  name="lastName"
-                  value={this.state.lastName}
-                  onChange={this.handleChange}
-                />
-              </div>
-              <div className="formInput">
-                <input
-                  placeholder="Title"
-                  name="topTitle"
-                  value={this.state.topTitle}
-                  onChange={this.handleChange}
-                />
-                <input
-                  placeholder="More about you"
-                  name="about"
-                  value={this.state.about}
-                  onChange={this.handleChange}
-                />
-              </div>
+              <div className="formInput">{displayForm()}</div>
             </form>
             <div className="bottom">
               <button className="buttonLeft hidden"></button>
-              <button className="autofill">Auto-fill</button>
-              <button className="buttonRight">
-                &#x27A1; &nbsp; &nbsp; Contact
+              <button className="autofill">auto-fill</button>
+              <button className="buttonRight" onClick={this.switchForm}>
+                &#x27A1; &nbsp; &nbsp; {this.state.nextForm}
               </button>
             </div>
           </div>
         </div>
         <div className="right">
-          <Preview />
+          <Preview
+            test="hello"
+            firstName={this.state.firstName}
+            lastName={this.state.lastName}
+            about={this.state.about}
+            title={this.state.topTitle}
+            twitter={this.state.twitter}
+            website={this.state.website}
+            email={this.state.email}
+            mobile={this.state.mobile}
+            city={this.state.city}
+          />
         </div>
       </div>
     );

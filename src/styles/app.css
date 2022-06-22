@@ -9,7 +9,7 @@
   --accent_5: rgba(0, 0, 0, 75%);
   --accent_6: rgba(61, 85, 136, 0.45);
   --accent_7: rgba(255, 232, 0, 0.5);
-  --accent_8: rgba(61, 85, 136, 0.05);
+  --accent_8: rgba(61, 85, 136, 0.3);
 }
 .mainContainer {
   display: grid;
@@ -17,7 +17,7 @@
   height: 100vh;
   width: 100vw;
 }
-
+/* EDITOR (Left Side) */
 .parent {
   display: grid;
 }
@@ -25,12 +25,6 @@
   display: flex;
   margin: auto;
   min-width: 430px;
-}
-
-.right {
-  background-color: var(--accent_8);
-  border-left: 2px solid var(--accent_7);
-  border-top: 2px solid var(--accent_1);
 }
 
 .formContainer {
@@ -90,4 +84,18 @@ button {
 }
 .hidden {
   display: none;
+}
+
+/* PREVIEW (Right-side) */
+.right {
+  background-color: var(--accent_8);
+
+  display: flex;
+  justify-content: center;
+}
+.paper {
+  width: 850px;
+  height: 1100px;
+  background-color: white;
+  margin: 2em;
 }
