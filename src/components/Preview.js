@@ -5,6 +5,7 @@ class Preview extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
     const {
       title,
@@ -17,7 +18,9 @@ class Preview extends Component {
       city,
       mobile,
       skillsList,
+      degreesObj,
     } = this.props;
+
     return (
       <div className="cvPreview">
         <div className="paper">
@@ -34,6 +37,7 @@ class Preview extends Component {
             <div className="mobile">{mobile}</div>
             <div className="city">{city}</div>
             <div className="skills">{skillsList}</div>
+            {/* <div className="education">{degreesObj}</div> */}
           </div>
         </div>
       </div>

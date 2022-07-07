@@ -23,11 +23,20 @@ class Editor extends Component {
       mobile: '',
       city: '',
       skillsList: [],
-      degreesObj: {},
-      jobsObj: {},
-      formElements: ['personal', 'contact', 'skills', 'education', 'work'],
-      currentForm: 'personal',
-      nextForm: 'contact',
+      degreesObj: [{ id: 0, university: '', degree: '', start: '', end: '' }],
+      jobsObj: [
+        {
+          id: 0,
+          organization: '',
+          title: '',
+          start: '',
+          end: '',
+          description: '',
+        },
+      ],
+      formElements: ['education', 'work', 'personal', 'contact', 'skills'],
+      currentForm: 'education',
+      nextForm: 'work',
       prevForm: '',
       showLeftButton: false,
       showRightButton: true,
@@ -40,24 +49,6 @@ class Editor extends Component {
     });
   }
 
-  // if (this.state.currentForm !== 'personal') {
-  //   this.setState({
-  //     showLeftButton: true,
-  //   });
-  // } else if (this.state.currentForm === 'personal') {
-  //   this.setState({
-  //     showLeftButton: false,
-  //   });
-  // }
-  // if (this.state.currentForm === 'work') {
-  //   this.setState({
-  //     showRightButton: false,
-  //   });
-  // } else {
-  //   this.setState({
-  //     showRightButton: true,
-  //   });
-  // }
   switchForm(event) {
     //changes the form that's displayed
     let direction = event.target.className.slice(6); //'Right' or 'Left'
@@ -97,7 +88,6 @@ class Editor extends Component {
 
   render() {
     const displayForm = () => {
-      console.log(this.state.currentForm, 'currentForm');
       if (this.state.currentForm === 'personal') {
         return (
           <Personal
@@ -126,19 +116,13 @@ class Editor extends Component {
             handleChange={this.handleChange}
           />
         );
+      } else if (this.state.currentForm === 'education') {
+        return <Education degreesObj={this.state.degreesObj} />;
+      } else if (this.state.currentForm === 'work') {
+        return (
+          <Work jobsObj={this.state.jobsObj} handleChange={this.handleChange} />
+        );
       }
-      //  else if (this.state.currentForm === 'education') {
-      //   return (
-      //     <Education
-      //       degreesObj={this.state.degreesObj}
-      //       handleChange={this.handleChange}
-      //     />
-      //   );
-      // } else if (this.state.currentForm === 'work') {
-      //   return (
-      //     <Work jobsObj={this.state.jobsObj} handleChange={this.handleChange} />
-      //   );
-      // }
     };
     return (
       <div className="mainContainer">
@@ -178,7 +162,7 @@ class Editor extends Component {
             city={this.state.city}
             skillsList={this.state.skillsList}
             degreesObj={this.state.degreesObj}
-            jobsObj={this.state.jobsObj}
+            // jobsObj={this.state.jobsObj}
           />
         </div>
       </div>

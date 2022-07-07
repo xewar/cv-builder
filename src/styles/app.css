@@ -34,11 +34,12 @@
   display: flex;
   flex-direction: column;
   gap: 5em;
-  width: 350px;
+  width: max-content;
   box-shadow: -5px -5px var(--accent_1), 5px 5px var(--accent_7);
 }
 
-input {
+input,
+.description {
   height: 2em;
   width: 100%;
   border: none;
@@ -49,13 +50,27 @@ input {
 input:focus {
   outline: none;
 }
+.description {
+  height: 6em;
+}
+
+input.date {
+  width: 40%;
+}
 form ::placeholder {
   color: var(--accent_6);
   font-family: Karla;
 }
-
+.dates {
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  justify-content: space-between;
+}
 form,
-.formInput {
+.formInput,
+.job {
   display: flex;
   flex-direction: column;
   gap: 2em;

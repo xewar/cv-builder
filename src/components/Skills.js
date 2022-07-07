@@ -5,7 +5,7 @@ class Skills extends Component {
     super(props);
   }
   render() {
-    const { skillsList, addMore, handleChange } = this.props;
+    const { skillsList, handleChange } = this.props;
     return (
       <div className="formInput">
         <input
@@ -26,7 +26,7 @@ class Skills extends Component {
           value={skillsList}
           onChange={handleChange}
         />
-        <button onClick={addMore}>+ Add More</button>
+        <button>+ Add More</button>
       </div>
     );
   }
