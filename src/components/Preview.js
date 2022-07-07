@@ -16,6 +16,7 @@ class Preview extends Component {
       website,
       city,
       mobile,
+      skillsList,
     } = this.props;
     return (
       <div className="cvPreview">
@@ -32,6 +33,7 @@ class Preview extends Component {
             <div className="email">{email}</div>
             <div className="mobile">{mobile}</div>
             <div className="city">{city}</div>
+            <div className="skills">{skillsList}</div>
           </div>
         </div>
       </div>

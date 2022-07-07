@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Preview from './Preview';
 import Personal from './Personal';
 import Contact from './Contact';
+import Skills from './Skills';
+import Education from './Education';
+import Work from './Work';
 
 class Editor extends Component {
   constructor(props) {
@@ -19,9 +22,15 @@ class Editor extends Component {
       email: '',
       mobile: '',
       city: '',
-      formElements: ['personal', 'contact', 'skills', 'education'],
+      skillsList: [],
+      degreesObj: {},
+      jobsObj: {},
+      formElements: ['personal', 'contact', 'skills', 'education', 'work'],
       currentForm: 'personal',
       nextForm: 'contact',
+      prevForm: '',
+      showLeftButton: false,
+      showRightButton: true,
     };
   }
   handleChange(event) {
@@ -29,19 +38,66 @@ class Editor extends Component {
     this.setState({
       [name]: value,
     });
-    console.log(name, value);
   }
+
+  // if (this.state.currentForm !== 'personal') {
+  //   this.setState({
+  //     showLeftButton: true,
+  //   });
+  // } else if (this.state.currentForm === 'personal') {
+  //   this.setState({
+  //     showLeftButton: false,
+  //   });
+  // }
+  // if (this.state.currentForm === 'work') {
+  //   this.setState({
+  //     showRightButton: false,
+  //   });
+  // } else {
+  //   this.setState({
+  //     showRightButton: true,
+  //   });
+  // }
   switchForm(event) {
-    console.log(event.target.className);
-    let direction = event.target.value;
+    //changes the form that's displayed
+    let direction = event.target.className.slice(6); //'Right' or 'Left'
+    let currentIndex = this.state.formElements.findIndex(
+      item => item === this.state.currentForm
+    );
+    let newIndex;
+    if (direction === 'Right') {
+      newIndex = currentIndex + 1;
+    } else {
+      newIndex = currentIndex - 1;
+    }
     this.setState({
-      currentForm: 'contact',
+      currentForm: this.state.formElements[newIndex],
+      nextForm: this.state.formElements[newIndex + 1],
+      prevForm: this.state.formElements[newIndex - 1],
     });
-    console.log(this.state.currentForm);
+    if (newIndex === 0) {
+      this.setState({
+        showLeftButton: false,
+      });
+    } else {
+      this.setState({
+        showLeftButton: true,
+      });
+    }
+    if (newIndex === 4) {
+      this.setState({
+        showRightButton: false,
+      });
+    } else {
+      this.setState({
+        showRightButton: true,
+      });
+    }
   }
 
   render() {
     const displayForm = () => {
+      console.log(this.state.currentForm, 'currentForm');
       if (this.state.currentForm === 'personal') {
         return (
           <Personal
@@ -63,27 +119,54 @@ class Editor extends Component {
             handleChange={this.handleChange}
           />
         );
+      } else if (this.state.currentForm === 'skills') {
+        return (
+          <Skills
+            skillsList={this.state.skillsList}
+            handleChange={this.handleChange}
+          />
+        );
       }
+      //  else if (this.state.currentForm === 'education') {
+      //   return (
+      //     <Education
+      //       degreesObj={this.state.degreesObj}
+      //       handleChange={this.handleChange}
+      //     />
+      //   );
+      // } else if (this.state.currentForm === 'work') {
+      //   return (
+      //     <Work jobsObj={this.state.jobsObj} handleChange={this.handleChange} />
+      //   );
+      // }
     };
     return (
       <div className="mainContainer">
         <div className="left">
           <div className="formContainer">
-            <form className="form">
-              <div className="formInput">{displayForm()}</div>
-            </form>
+            <form className="form">{displayForm()}</form>
             <div className="bottom">
-              <button className="buttonLeft hidden"></button>
+              <div>
+                {this.state.showLeftButton && (
+                  <button className="buttonLeft" onClick={this.switchForm}>
+                    {this.state.prevForm} &nbsp; &nbsp;{' '}
+                    <span className="flipped">&#x27A1;</span>
+                  </button>
+                )}
+              </div>
               <button className="autofill">auto-fill</button>
-              <button className="buttonRight" onClick={this.switchForm}>
-                &#x27A1; &nbsp; &nbsp; {this.state.nextForm}
-              </button>
+              <div>
+                {this.state.showRightButton && (
+                  <button className="buttonRight" onClick={this.switchForm}>
+                    &#x27A1; &nbsp; &nbsp; {this.state.nextForm}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
         <div className="right">
           <Preview
-            test="hello"
             firstName={this.state.firstName}
             lastName={this.state.lastName}
             about={this.state.about}
@@ -93,6 +176,9 @@ class Editor extends Component {
             email={this.state.email}
             mobile={this.state.mobile}
             city={this.state.city}
+            skillsList={this.state.skillsList}
+            degreesObj={this.state.degreesObj}
+            jobsObj={this.state.jobsObj}
           />
         </div>
       </div>

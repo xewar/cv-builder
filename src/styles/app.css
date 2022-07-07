@@ -89,7 +89,6 @@ button {
 /* PREVIEW (Right-side) */
 .right {
   background-color: var(--accent_8);
-
   display: flex;
   justify-content: center;
 }
@@ -98,4 +97,7 @@ button {
   height: 1100px;
   background-color: white;
   margin: 2em;
+}
+.flipped {
+  transform: scale(-1);
 }
