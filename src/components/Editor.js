@@ -10,8 +10,9 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.updateEducation = this.updateEducation.bind(this);
+    this.updateWork = this.updateWork.bind(this);
     this.switchForm = this.switchForm.bind(this);
-
     this.state = {
       firstName: '',
       lastName: '',
@@ -47,6 +48,20 @@ class Editor extends Component {
     this.setState({
       [name]: value,
     });
+  }
+  updateEducation(event) {
+    const { name, value } = event.target;
+    const degreesObj = this.state.degreesObj;
+    let degree = { ...degreesObj[0], [name]: value };
+    degreesObj[0] = degree;
+    this.setState({ degreesObj });
+  }
+  updateWork(event) {
+    const { name, value } = event.target;
+    const jobsObj = this.state.jobsObj;
+    let jobInfo = { ...jobsObj[0], [name]: value };
+    jobsObj[0] = jobInfo;
+    this.setState({ jobsObj });
   }
 
   switchForm(event) {
@@ -117,10 +132,15 @@ class Editor extends Component {
           />
         );
       } else if (this.state.currentForm === 'education') {
-        return <Education degreesObj={this.state.degreesObj} />;
+        return (
+          <Education
+            degreesObj={this.state.degreesObj}
+            handleChange={this.updateEducation}
+          />
+        );
       } else if (this.state.currentForm === 'work') {
         return (
-          <Work jobsObj={this.state.jobsObj} handleChange={this.handleChange} />
+          <Work jobsObj={this.state.jobsObj} handleChange={this.updateWork} />
         );
       }
     };
@@ -161,7 +181,7 @@ class Editor extends Component {
             mobile={this.state.mobile}
             city={this.state.city}
             skillsList={this.state.skillsList}
-            degreesObj={this.state.degreesObj}
+            university={this.state.degreesObj[0].university}
             // jobsObj={this.state.jobsObj}
           />
         </div>

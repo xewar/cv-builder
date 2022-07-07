@@ -18,9 +18,9 @@ class Preview extends Component {
       city,
       mobile,
       skillsList,
-      degreesObj,
+      university,
     } = this.props;
-
+    console.log('university is', university);
     return (
       <div className="cvPreview">
         <div className="paper">
@@ -37,7 +37,7 @@ class Preview extends Component {
             <div className="mobile">{mobile}</div>
             <div className="city">{city}</div>
             <div className="skills">{skillsList}</div>
-            {/* <div className="education">{degreesObj}</div> */}
+            <div className="education">{university}</div>
           </div>
         </div>
       </div>

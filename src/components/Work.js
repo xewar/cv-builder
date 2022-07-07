@@ -4,22 +4,14 @@ class Work extends Component {
   constructor(props) {
     super(props);
     this.addMore = this.addMore.bind(this);
-    this.handleChange = this.handleChange.bind(this);
   }
   addMore(event) {
     event.preventDefault();
     console.log('to be filled in');
   }
-  handleChange(event) {
-    const { name, value } = event.target;
-    const { jobsObj } = this.props;
-    let degree = { ...jobsObj[0], [name]: value };
-    jobsObj[0] = degree;
-    this.setState({ jobsObj });
-    console.log(jobsObj[0]);
-  }
+
   render() {
-    const { jobsObj } = this.props;
+    const { jobsObj, handleChange } = this.props;
     return (
       <div className="formInput">
         <div className="job">
@@ -27,13 +19,13 @@ class Work extends Component {
             placeholder="Your Job Title"
             name="title"
             value={jobsObj[0].title}
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
           <input
             placeholder="Company Name"
             name="organization"
             value={jobsObj[0].organization}
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
           <div className="dates">
             <input
@@ -41,14 +33,14 @@ class Work extends Component {
               className="date"
               name="start"
               value={jobsObj[0].start}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
             <input
               placeholder="End"
               className="date"
               name="end"
               value={jobsObj[0].end}
-              onChange={this.handleChange}
+              onChange={handleChange}
             />
           </div>
           <textarea
@@ -56,7 +48,7 @@ class Work extends Component {
             className="description"
             name="description"
             value={jobsObj[0].description}
-            onChange={this.handleChange}
+            onChange={handleChange}
           />
         </div>
         <button onClick={this.addMore}>+ Add Job</button>
