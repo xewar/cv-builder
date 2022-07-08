@@ -3,15 +3,10 @@ import React, { Component } from 'react';
 class Work extends Component {
   constructor(props) {
     super(props);
-    this.addMore = this.addMore.bind(this);
-  }
-  addMore(event) {
-    event.preventDefault();
-    console.log('to be filled in');
   }
 
   render() {
-    const { jobsObj, handleChange } = this.props;
+    const { jobsObj, handleChange, addNewJob } = this.props;
     return (
       <div className="formInput">
         <div className="job">
@@ -51,7 +46,7 @@ class Work extends Component {
             onChange={handleChange}
           />
         </div>
-        <button onClick={this.addMore}>+ Add Job</button>
+        <button onClick={addNewJob}>+ Add Job</button>
       </div>
     );
   }

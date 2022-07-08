@@ -11,6 +11,10 @@ class Editor extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.updateEducation = this.updateEducation.bind(this);
+    this.addNewEducation = this.addNewEducation.bind(this);
+    this.deleteEducation = this.deleteEducation.bind(this);
+    this.addNewJob = this.addNewJob.bind(this);
+
     this.updateWork = this.updateWork.bind(this);
     this.switchForm = this.switchForm.bind(this);
     this.state = {
@@ -56,6 +60,20 @@ class Editor extends Component {
     degreesObj[0] = degree;
     this.setState({ degreesObj });
   }
+  addNewEducation(event) {
+    event.preventDefault();
+    console.log('add Education');
+  }
+  deleteEducation(event) {
+    console.log(event);
+    console.log('delete Education');
+  }
+
+  addNewJob(event) {
+    event.preventDefault();
+    console.log('to be filled in');
+  }
+
   updateWork(event) {
     const { name, value } = event.target;
     const jobsObj = this.state.jobsObj;
@@ -100,7 +118,6 @@ class Editor extends Component {
       });
     }
   }
-
   render() {
     const displayForm = () => {
       if (this.state.currentForm === 'personal') {
@@ -136,11 +153,17 @@ class Editor extends Component {
           <Education
             degreesObj={this.state.degreesObj}
             handleChange={this.updateEducation}
+            addNewEducation={this.addNewEducation}
+            deleteEducation={this.deleteEducation}
           />
         );
       } else if (this.state.currentForm === 'work') {
         return (
-          <Work jobsObj={this.state.jobsObj} handleChange={this.updateWork} />
+          <Work
+            jobsObj={this.state.jobsObj}
+            handleChange={this.updateWork}
+            addNewJob={this.addNewJob}
+          />
         );
       }
     };

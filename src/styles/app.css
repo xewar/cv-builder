@@ -67,6 +67,7 @@ form ::placeholder {
   flex-direction: row;
   gap: 2em;
   justify-content: space-between;
+  align-items: center;
 }
 form,
 .formInput,
@@ -97,9 +98,6 @@ button {
   justify-content: space-between;
   gap: 2em;
 }
-.hidden {
-  display: none;
-}
 
 /* PREVIEW (Right-side) */
 .right {
@@ -115,4 +113,13 @@ button {
 }
 .flipped {
   transform: scale(-1);
+}
+
+.trash {
+  color: white;
+  font-size: 1.7em;
+  text-align: center;
+}
+.trash:hover {
+  transform: scaleX(120%);
 }

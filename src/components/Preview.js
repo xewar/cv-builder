@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Editor from './Editor';
 
 class Preview extends Component {
   constructor(props) {

@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 class Education extends Component {
   constructor(props) {
     super(props);
-    this.addEducation = this.addEducation.bind(this);
-  }
-  addEducation(event) {
-    event.preventDefault();
-    console.log('to be filled in');
   }
 
   render() {
-    const { degreesObj, handleChange } = this.props;
+    const { degreesObj, handleChange, addNewEducation, deleteEducation } =
+      this.props;
     return (
       <div className="formInput">
         <input
@@ -41,8 +38,12 @@ class Education extends Component {
             value={degreesObj[0].end}
             onChange={handleChange}
           />
+          <div className="trash" onClick={deleteEducation}>
+            {' '}
+            <FaTrash />
+          </div>
         </div>
-        <button onClick={this.addEducation}>+ Add More</button>
+        <button onClick={addNewEducation}>+ Add More</button>
       </div>
     );
   }
