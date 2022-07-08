@@ -19,10 +19,31 @@ class Education extends Component {
           />
           <input
             placeholder="Degree"
-            name="degree"
+            name="degreeType"
             value={degree.degreeType}
             onChange={handleChange}
           />
+
+          <div className="dates">
+            <input
+              placeholder="Start"
+              className="date"
+              name="start"
+              value={degree.start}
+              onChange={handleChange}
+            />
+            <input
+              placeholder="End"
+              className="date"
+              name="end"
+              value={degree.end}
+              onChange={handleChange}
+            />
+            <div className="trash" onClick={deleteEducation}>
+              {' '}
+              <FaTrash />
+            </div>
+          </div>
         </div>
       );
     });

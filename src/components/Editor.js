@@ -6,6 +6,7 @@ import Skills from './Skills';
 import Education from './Education';
 import Work from './Work';
 import uniqid from 'uniqid';
+import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
 
 class Editor extends Component {
   constructor(props) {
@@ -64,27 +65,57 @@ class Editor extends Component {
   }
   updateEducation(event) {
     const degreesObj = this.state.degreesObj;
-    const degreeId = event.target.parentNode.id;
+    let degreeId;
+    if (event.target.name === 'start' || event.target.name === 'end') {
+      degreeId = event.target.parentNode.parentNode.id;
+    } else {
+      degreeId = event.target.parentNode.id;
+    }
     const { name, value } = event.target;
+
     let currentIndex = this.state.degreesObj.findIndex(
       degree => degree.id === degreeId
     );
     let degree = { ...degreesObj[currentIndex], [name]: value };
     degreesObj[currentIndex] = degree;
     this.setState({ degreesObj });
+    console.log(degreesObj);
   }
   addNewEducation(event) {
     //adding a new college or university
     event.preventDefault();
     let degreesObj = this.state.degreesObj; //shorter name
-    let newId = degreesObj[degreesObj.length - 1].id + 1;
-    let newUni = { id: newId, university: '', degree: '', start: '', end: '' };
+    let newId = uniqid();
+    let newUni = {
+      id: newId,
+      university: '',
+      degreeType: '',
+      start: '',
+      end: '',
+    };
     degreesObj.push(newUni);
     this.setState({ degreesObj });
   }
   deleteEducation(event) {
-    console.log(event);
-    console.log('delete Education');
+    const degreesObj = this.state.degreesObj;
+    const degreeId =
+      event.target.parentNode.parentNode.parentNode.parentNode.id; //getting the Id of the appropriate degree to delete
+    let currentIndex = this.state.degreesObj.findIndex(
+      degree => degree.id === degreeId
+    );
+    //if you delete all education info, regenerate a blank form
+    if (degreesObj.length === 1) {
+      let newUni = {
+        id: uniqid(),
+        university: '',
+        degreeType: '',
+        start: '',
+        end: '',
+      };
+      degreesObj.push(newUni);
+    }
+    degreesObj.splice(currentIndex, 1);
+    this.setState({ degreesObj });
   }
 
   addNewJob(event) {
