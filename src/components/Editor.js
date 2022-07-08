@@ -5,6 +5,7 @@ import Contact from './Contact';
 import Skills from './Skills';
 import Education from './Education';
 import Work from './Work';
+import uniqid from 'uniqid';
 
 class Editor extends Component {
   constructor(props) {
@@ -28,10 +29,18 @@ class Editor extends Component {
       mobile: '',
       city: '',
       skillsList: [],
-      degreesObj: [{ id: 0, university: '', degree: '', start: '', end: '' }],
+      degreesObj: [
+        {
+          id: uniqid(),
+          university: '',
+          degreeType: '',
+          start: '',
+          end: '',
+        },
+      ],
       jobsObj: [
         {
-          id: 0,
+          id: uniqid(),
           organization: '',
           title: '',
           start: '',
@@ -54,15 +63,24 @@ class Editor extends Component {
     });
   }
   updateEducation(event) {
-    const { name, value } = event.target;
     const degreesObj = this.state.degreesObj;
-    let degree = { ...degreesObj[0], [name]: value };
-    degreesObj[0] = degree;
+    const degreeId = event.target.parentNode.id;
+    const { name, value } = event.target;
+    let currentIndex = this.state.degreesObj.findIndex(
+      degree => degree.id === degreeId
+    );
+    let degree = { ...degreesObj[currentIndex], [name]: value };
+    degreesObj[currentIndex] = degree;
     this.setState({ degreesObj });
   }
   addNewEducation(event) {
+    //adding a new college or university
     event.preventDefault();
-    console.log('add Education');
+    let degreesObj = this.state.degreesObj; //shorter name
+    let newId = degreesObj[degreesObj.length - 1].id + 1;
+    let newUni = { id: newId, university: '', degree: '', start: '', end: '' };
+    degreesObj.push(newUni);
+    this.setState({ degreesObj });
   }
   deleteEducation(event) {
     console.log(event);

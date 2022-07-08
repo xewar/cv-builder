@@ -19,7 +19,6 @@ class Preview extends Component {
       skillsList,
       university,
     } = this.props;
-    console.log('university is', university);
     return (
       <div className="cvPreview">
         <div className="paper">
