@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FaTrash } from 'react-icons/fa';
 
 class Work extends Component {
   constructor(props) {
@@ -6,20 +7,27 @@ class Work extends Component {
   }
 
   render() {
-    const { jobsObj, handleChange, addNewJob } = this.props;
-    return (
-      <div className="formInput">
-        <div className="job">
+    const { jobsObj, handleChange, addNewJob, deleteJob } = this.props;
+    const renderJobs = jobsObj.map(job => {
+      return (
+        <div className="job" key={job.id} id={job.id}>
           <input
             placeholder="Your Job Title"
             name="title"
-            value={jobsObj[0].title}
+            value={job.title}
             onChange={handleChange}
           />
           <input
             placeholder="Company Name"
             name="organization"
-            value={jobsObj[0].organization}
+            value={job.organization}
+            onChange={handleChange}
+          />
+          <textarea
+            placeholder="Description"
+            className="description"
+            name="description"
+            value={job.description}
             onChange={handleChange}
           />
           <div className="dates">
@@ -27,25 +35,28 @@ class Work extends Component {
               placeholder="Start"
               className="date"
               name="start"
-              value={jobsObj[0].start}
+              value={job.start}
               onChange={handleChange}
             />
             <input
               placeholder="End"
               className="date"
               name="end"
-              value={jobsObj[0].end}
+              value={job.end}
               onChange={handleChange}
             />
+            <div className="trash" onClick={deleteJob}>
+              {' '}
+              <FaTrash />
+            </div>
           </div>
-          <textarea
-            placeholder="Description"
-            className="description"
-            name="description"
-            value={jobsObj[0].description}
-            onChange={handleChange}
-          />
         </div>
+      );
+    });
+    return (
+      <div className="formInput">
+        <div>{renderJobs}</div>
+
         <button onClick={addNewJob}>+ Add Job</button>
       </div>
     );
