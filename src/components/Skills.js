@@ -26,7 +26,7 @@ class Skills extends Component {
           value={skillsList}
           onChange={handleChange}
         />
-        <button>+ Add More</button>
+        <button>+ Add Skill</button>
       </div>
     );
   }

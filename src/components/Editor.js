@@ -12,12 +12,9 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.updateEducation = this.updateEducation.bind(this);
-    this.addNewEducation = this.addNewEducation.bind(this);
-    this.deleteEducation = this.deleteEducation.bind(this);
-    this.addNewJob = this.addNewJob.bind(this);
-    this.deleteJob = this.deleteJob.bind(this);
-    this.updateWork = this.updateWork.bind(this);
+    this.handleChangeWorkEducation = this.handleChangeWorkEducation.bind(this);
+    this.addNew = this.addNew.bind(this);
+    this.deleteInstance = this.deleteInstance.bind(this);
     this.switchForm = this.switchForm.bind(this);
     this.state = {
       firstName: '',
@@ -49,9 +46,9 @@ class Editor extends Component {
           description: '',
         },
       ],
-      formElements: ['work', 'personal', 'contact', 'skills', 'education'],
-      currentForm: 'work',
-      nextForm: 'personal',
+      formElements: ['personal', 'contact', 'skills', 'education', 'work'],
+      currentForm: 'personal',
+      nextForm: 'contact',
       prevForm: '',
       showLeftButton: false,
       showRightButton: true,
@@ -63,84 +60,46 @@ class Editor extends Component {
       [name]: value,
     });
   }
-  updateEducation(event) {
-    const degreesObj = this.state.degreesObj;
-    let degreeId;
-    if (event.target.name === 'start' || event.target.name === 'end') {
-      degreeId = event.target.parentNode.parentNode.id;
+  handleChangeWorkEducation(event) {
+    //updates the work and education forms as you type
+    let type = event.target.parentNode.parentNode.className;
+    let obj;
+    let id;
+    if (type === 'job' || type === 'jobsDiv') {
+      obj = this.state.jobsObj;
     } else {
-      degreeId = event.target.parentNode.id;
+      obj = this.state.degreesObj;
+    }
+    if (event.target.name === 'start' || event.target.name === 'end') {
+      //date elements are nested differently in the form
+      id = event.target.parentNode.parentNode.id;
+    } else {
+      id = event.target.parentNode.id;
     }
     const { name, value } = event.target;
-    let currentIndex = this.state.degreesObj.findIndex(
-      degree => degree.id === degreeId
-    );
-    let degree = { ...degreesObj[currentIndex], [name]: value };
-    degreesObj[currentIndex] = degree;
-    this.setState({ degreesObj });
+    let currentIndex = obj.findIndex(item => item.id === id);
+    let updatedItem = { ...obj[currentIndex], [name]: value };
+    obj[currentIndex] = updatedItem;
+    this.setState({ obj });
   }
 
-  addNewEducation(event) {
-    //adding a new college or university
+  addNew(event) {
     event.preventDefault();
-    let degreesObj = this.state.degreesObj; //shorter name
-    let newUni = {
-      id: uniqid(),
-      university: '',
-      degreeType: '',
-      start: '',
-      end: '',
-    };
-    degreesObj.push(newUni);
-    this.setState({ degreesObj });
-  }
-
-  deleteEducation(event) {
-    const degreesObj = this.state.degreesObj;
-    const degreeId =
-      event.target.parentNode.parentNode.parentNode.parentNode.id; //getting the Id of the appropriate degree to delete
-    let currentIndex = degreesObj.findIndex(degree => degree.id === degreeId);
-    //if you delete all education info, regenerate a blank form
-    if (degreesObj.length === 1) {
-      let newUni = {
+    let type = event.target.textContent;
+    let obj; //object to be updated (either jobs or education)
+    let newInstance; //new instance of the object
+    if (type === '+ Add More') {
+      obj = this.state.degreesObj;
+      newInstance = {
         id: uniqid(),
         university: '',
         degreeType: '',
         start: '',
         end: '',
       };
-      degreesObj.push(newUni);
-    }
-    degreesObj.splice(currentIndex, 1);
-    this.setState({ degreesObj });
-  }
-
-  addNewJob(event) {
-    //adding a new college or university
-    event.preventDefault();
-    let jobsObj = this.state.jobsObj; //shortcut
-    let newJob = {
-      id: uniqid(),
-      organization: '',
-      title: '',
-      start: '',
-      end: '',
-      description: '',
-    };
-    jobsObj.push(newJob);
-    this.setState({ jobsObj });
-    console.log(jobsObj);
-  }
-
-  deleteJob(event) {
-    event.preventDefault();
-    let jobsObj = this.state.jobsObj; //shortcut
-    console.log('before', jobsObj);
-    const jobId = event.target.parentNode.parentNode.parentNode.parentNode.id; //getting the Id of the appropriate degree to delete
-    let currentIndex = jobsObj.findIndex(job => job.id === jobId);
-    //if you delete all work history, regenerate a blank form
-    if (jobsObj.length === 1) {
-      let newJob = {
+    } else if (type === '+ Add Job') {
+      obj = this.state.jobsObj;
+      newInstance = {
         id: uniqid(),
         organization: '',
         title: '',
@@ -148,29 +107,47 @@ class Editor extends Component {
         end: '',
         description: '',
       };
-      jobsObj.push(newJob);
     }
-    jobsObj.splice(currentIndex, 1);
-    this.setState({ jobsObj });
-    console.log('after', jobsObj);
+    obj.push(newInstance);
+    this.setState({ obj });
   }
 
-  updateWork(event) {
-    // let jobInfo = { ...jobsObj[0], [name]: value };
-    // jobsObj[0] = jobInfo;
-    // this.setState({ jobsObj });
-    const jobsObj = this.state.jobsObj;
-    let jobId;
-    if (event.target.name === 'start' || event.target.name === 'end') {
-      jobId = event.target.parentNode.parentNode.id;
-    } else {
-      jobId = event.target.parentNode.id;
+  deleteInstance(event) {
+    //deleting either a job or degree
+    let type =
+      event.target.parentNode.parentNode.parentNode.parentNode.className;
+    let obj; //object to be updated (either jobs or education)
+    //get the id of the specific job or degree to delete
+    let id = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    let newInstance;
+    if (type === 'degree') {
+      obj = this.state.degreesObj;
+      newInstance = {
+        id: uniqid(),
+        university: '',
+        degreeType: '',
+        start: '',
+        end: '',
+      };
+    } else if (type === 'job') {
+      obj = this.state.jobsObj;
+      newInstance = {
+        id: uniqid(),
+        organization: '',
+        title: '',
+        start: '',
+        end: '',
+        description: '',
+      };
     }
-    const { name, value } = event.target;
-    let currentIndex = this.state.jobsObj.findIndex(job => job.id === jobId);
-    let job = { ...jobsObj[currentIndex], [name]: value };
-    jobsObj[currentIndex] = job;
-    this.setState({ jobsObj });
+    let currentIndex = obj.findIndex(item => item.id === id);
+
+    if (obj.length === 1) {
+      //if you delete the last item, add a blank placeholder back to the object
+      obj.push(newInstance);
+    }
+    obj.splice(currentIndex, 1);
+    this.setState({ obj });
   }
 
   switchForm(event) {
@@ -243,18 +220,18 @@ class Editor extends Component {
         return (
           <Education
             degreesObj={this.state.degreesObj}
-            handleChange={this.updateEducation}
-            addNewEducation={this.addNewEducation}
-            deleteEducation={this.deleteEducation}
+            handleChange={this.handleChangeWorkEducation}
+            addNewEducation={this.addNew}
+            deleteEducation={this.deleteInstance}
           />
         );
       } else if (this.state.currentForm === 'work') {
         return (
           <Work
             jobsObj={this.state.jobsObj}
-            handleChange={this.updateWork}
-            addNewJob={this.addNewJob}
-            deleteJob={this.deleteJob}
+            handleChange={this.handleChangeWorkEducation}
+            addNewJob={this.addNew}
+            deleteJob={this.deleteInstance}
           />
         );
       }
@@ -268,7 +245,7 @@ class Editor extends Component {
               <div>
                 {this.state.showLeftButton && (
                   <button className="buttonLeft" onClick={this.switchForm}>
-                    {this.state.prevForm} &nbsp; &nbsp;{' '}
+                    {this.state.prevForm} &nbsp;{' '}
                     <span className="flipped">&#x27A1;</span>
                   </button>
                 )}
@@ -277,7 +254,7 @@ class Editor extends Component {
               <div>
                 {this.state.showRightButton && (
                   <button className="buttonRight" onClick={this.switchForm}>
-                    &#x27A1; &nbsp; &nbsp; {this.state.nextForm}
+                    &#x27A1; &nbsp; {this.state.nextForm}
                   </button>
                 )}
               </div>
