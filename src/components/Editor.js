@@ -11,11 +11,11 @@ import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matc
 class Editor extends Component {
   constructor(props) {
     super(props);
+    this.switchForm = this.switchForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeWorkEducation = this.handleChangeWorkEducation.bind(this);
     this.addNew = this.addNew.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
-    this.switchForm = this.switchForm.bind(this);
     this.state = {
       firstName: '',
       lastName: '',
@@ -26,7 +26,20 @@ class Editor extends Component {
       email: '',
       mobile: '',
       city: '',
-      skillsList: [],
+      skillsObj: [
+        {
+          id: uniqid(),
+          skill: '',
+        },
+        {
+          id: uniqid(),
+          skill: '',
+        },
+        {
+          id: uniqid(),
+          skill: '',
+        },
+      ],
       degreesObj: [
         {
           id: uniqid(),
@@ -67,6 +80,8 @@ class Editor extends Component {
     let id;
     if (type === 'job' || type === 'jobsDiv') {
       obj = this.state.jobsObj;
+    } else if (type === 'skillsDiv') {
+      obj = this.state.skillsObj;
     } else {
       obj = this.state.degreesObj;
     }
@@ -106,6 +121,12 @@ class Editor extends Component {
         start: '',
         end: '',
         description: '',
+      };
+    } else {
+      obj = this.state.skillsObj;
+      newInstance = {
+        id: uniqid(),
+        skill: '',
       };
     }
     obj.push(newInstance);
@@ -212,8 +233,9 @@ class Editor extends Component {
       } else if (this.state.currentForm === 'skills') {
         return (
           <Skills
-            skillsList={this.state.skillsList}
-            handleChange={this.handleChange}
+            skillsObj={this.state.skillsObj}
+            handleChange={this.handleChangeWorkEducation}
+            addSkill={this.addNew}
           />
         );
       } else if (this.state.currentForm === 'education') {

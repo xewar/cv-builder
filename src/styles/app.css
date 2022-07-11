@@ -79,7 +79,8 @@ form ::placeholder {
 form,
 .formInput,
 .job,
-.degree {
+.degree,
+.skillsDiv {
   display: flex;
   flex-direction: column;
   gap: 1.5em;

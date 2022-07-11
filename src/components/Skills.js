@@ -1,32 +1,29 @@
 import React, { Component } from 'react';
+import uniqid from 'uniqid';
 
 class Skills extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    const { skillsList, handleChange } = this.props;
+    const { skillsObj, handleChange, addSkill } = this.props;
+    const placeholders = ['HTML & CSS', 'Javascript', 'React'];
+    const renderSkills = skillsObj.map(skill => {
+      return (
+        <div className="skill" key={skill.id} id={skill.id}>
+          <input
+            placeholder={placeholders.shift()}
+            name="skill"
+            value={skill.skill}
+            onChange={handleChange}
+          ></input>
+        </div>
+      );
+    });
     return (
       <div className="formInput">
-        <input
-          placeholder="HTML & CSS"
-          name="skillsList"
-          value={skillsList}
-          onChange={handleChange}
-        />
-        <input
-          placeholder="JavaScript"
-          name="skillsList"
-          value={skillsList}
-          onChange={handleChange}
-        />
-        <input
-          placeholder="React"
-          name="skillsList"
-          value={skillsList}
-          onChange={handleChange}
-        />
-        <button>+ Add Skill</button>
+        <div className="skillsDiv">{renderSkills}</div>
+        <button onClick={addSkill}>+ Add Skill</button>
       </div>
     );
   }
