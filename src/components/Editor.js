@@ -13,8 +13,9 @@ class Editor extends Component {
     super(props);
     this.switchForm = this.switchForm.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleChangeWorkEducation = this.handleChangeWorkEducation.bind(this);
+    this.handleChangeObjects = this.handleChangeObjects.bind(this);
     this.addNew = this.addNew.bind(this);
+    this.autofill = this.autofill.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
     this.state = {
       firstName: '',
@@ -65,6 +66,7 @@ class Editor extends Component {
       prevForm: '',
       showLeftButton: false,
       showRightButton: true,
+      autofillClearButton: 'auto-fill',
     };
   }
   handleChange(event) {
@@ -73,8 +75,9 @@ class Editor extends Component {
       [name]: value,
     });
   }
-  handleChangeWorkEducation(event) {
-    //updates the work and education forms as you type
+
+  //updates the work, education, and skills forms as you type
+  handleChangeObjects(event) {
     let type = event.target.parentNode.parentNode.className;
     let obj;
     let id;
@@ -98,10 +101,11 @@ class Editor extends Component {
     this.setState({ obj });
   }
 
+  //add a new job, degree, or skill
   addNew(event) {
     event.preventDefault();
     let type = event.target.textContent;
-    let obj; //object to be updated (either jobs or education)
+    let obj; //
     let newInstance; //new instance of the object
     if (type === '+ Add More') {
       obj = this.state.degreesObj;
@@ -133,8 +137,8 @@ class Editor extends Component {
     this.setState({ obj });
   }
 
+  //deleting a job or degree with the trash icon
   deleteInstance(event) {
-    //deleting either a job or degree
     let type =
       event.target.parentNode.parentNode.parentNode.parentNode.className;
     let obj; //object to be updated (either jobs or education)
@@ -207,6 +211,143 @@ class Editor extends Component {
       });
     }
   }
+  autofill = event => {
+    let mode = event.target.textContent;
+    if (mode === 'auto-fill') {
+      this.setState({
+        autofillClearButton: 'clear',
+        firstName: 'Francia',
+        lastName: 'Marquez',
+        about: 'Soy porque somos',
+        topTitle:
+          'Lawyer, Environmental Activist, and Vice-President of Colombia',
+        twitter: '@FranciaMarquezM',
+        website: 'franciamarquezmina.co',
+        email: 'info@franciamarquezmina',
+        mobile: '',
+        city: 'Bogotá, Colombia',
+        skillsObj: [
+          {
+            id: uniqid(),
+            skill: 'Javascript',
+          },
+          {
+            id: uniqid(),
+            skill: 'React',
+          },
+          {
+            id: uniqid(),
+            skill: 'Node.js',
+          },
+          {
+            id: uniqid(),
+            skill: 'Express',
+          },
+          {
+            id: uniqid(),
+            skill: 'HTML',
+          },
+          {
+            id: uniqid(),
+            skill: 'CSS',
+          },
+        ],
+        degreesObj: [
+          {
+            id: uniqid(),
+            university: 'Universidad Santiago de Cali',
+            degreeType: 'J.D',
+            start: '2017',
+            end: '2020',
+          },
+        ],
+        jobsObj: [
+          {
+            id: uniqid(),
+            organization:
+              'the National Peace, Reconciliation, and Coexistence Committee',
+            title: 'President',
+            start: '2021',
+            end: 'Present',
+            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+          enim ad minim veniam, quis nostrud exercitation ullamco laboris
+          nisi ut aliquip ex ea commodo consequat.`,
+          },
+          {
+            id: uniqid(),
+            organization:
+              'Association of Community Councils of the North of Cauca (ACONC)',
+            title: 'Activist',
+            start: '1997',
+            end: 'Present',
+            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+          enim ad minim veniam, quis nostrud exercitation ullamco laboris
+          nisi ut aliquip ex ea commodo consequat.`,
+          },
+          {
+            id: uniqid(),
+            organization: 'Black Communities Process Organization (PCN)',
+            title: 'Active Member',
+            start: '1997',
+            end: 'Present',
+            description: `Duis aute irure dolor in reprehenderit in voluptate velit esse
+           cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+           cupidatat non proident, sunt in culpa qui officia deserunt
+           mollit anim id est laborum.`,
+          },
+        ],
+      });
+    } else {
+      this.setState({
+        autofillClearButton: 'auto-fill',
+        firstName: '',
+        lastName: '',
+        about: '',
+        topTitle: '',
+        twitter: '',
+        website: '',
+        email: '',
+        mobile: '',
+        city: '',
+        skillsObj: [
+          {
+            id: uniqid(),
+            skill: '',
+          },
+          {
+            id: uniqid(),
+            skill: '',
+          },
+          {
+            id: uniqid(),
+            skill: '',
+          },
+        ],
+        degreesObj: [
+          {
+            id: uniqid(),
+            university: '',
+            degreeType: '',
+            start: '',
+            end: '',
+          },
+        ],
+        jobsObj: [
+          {
+            id: uniqid(),
+            organization: '',
+            title: '',
+            start: '',
+            end: '',
+            description: '',
+          },
+        ],
+      });
+    }
+  };
+
   render() {
     const displayForm = () => {
       if (this.state.currentForm === 'personal') {
@@ -234,7 +375,7 @@ class Editor extends Component {
         return (
           <Skills
             skillsObj={this.state.skillsObj}
-            handleChange={this.handleChangeWorkEducation}
+            handleChange={this.handleChangeObjects}
             addSkill={this.addNew}
           />
         );
@@ -242,7 +383,7 @@ class Editor extends Component {
         return (
           <Education
             degreesObj={this.state.degreesObj}
-            handleChange={this.handleChangeWorkEducation}
+            handleChange={this.handleChangeObjects}
             addNewEducation={this.addNew}
             deleteEducation={this.deleteInstance}
           />
@@ -251,7 +392,7 @@ class Editor extends Component {
         return (
           <Work
             jobsObj={this.state.jobsObj}
-            handleChange={this.handleChangeWorkEducation}
+            handleChange={this.handleChangeObjects}
             addNewJob={this.addNew}
             deleteJob={this.deleteInstance}
           />
@@ -272,7 +413,9 @@ class Editor extends Component {
                   </button>
                 )}
               </div>
-              <button className="autofill">auto-fill</button>
+              <button className="autofill" onClick={this.autofill}>
+                {this.state.autofillClearButton}
+              </button>
               <div>
                 {this.state.showRightButton && (
                   <button className="buttonRight" onClick={this.switchForm}>

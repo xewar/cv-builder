@@ -41,7 +41,7 @@ class Preview extends Component {
     });
     const displayDegrees = degreesObj.map(degree => {
       return (
-        <div className="degree" key={uniqid()}>
+        <div className="degreePreview" key={uniqid()}>
           <div className="degreeType">{degree.degreeType}</div>
           <div className="university">{degree.university}</div>
           <div className="degreeStart">{degree.start}</div>
