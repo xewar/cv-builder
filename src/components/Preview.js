@@ -5,7 +5,6 @@ class Preview extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     const {
       title,
@@ -64,9 +63,23 @@ class Preview extends Component {
             <div className="email">{email}</div>
             <div className="mobile">{mobile}</div>
             <div className="city">{city}</div>
-            <div className="skills">{displaySkills}</div>
-            <div className="education">{displayDegrees}</div>
-            <div className="work">{displayJobs}</div>
+            <div className="skills">
+              {/* section title only displayed if there is something filled out */}
+              {skillsObj[0].skill && <div className="sectionTitle">Skills</div>}
+              <div>{displaySkills}</div>
+            </div>
+            <div className="education">
+              {degreesObj[0].university && (
+                <div className="sectionTitle">Education</div>
+              )}
+              <div>{displayDegrees}</div>
+            </div>
+            <div className="work">
+              {jobsObj[0].title && (
+                <div className="sectionTitle">Experience</div>
+              )}
+              <div> {displayJobs}</div>
+            </div>
           </div>
         </div>
       </div>

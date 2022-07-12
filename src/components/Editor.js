@@ -217,7 +217,7 @@ class Editor extends Component {
       this.setState({
         autofillClearButton: 'clear',
         firstName: 'Francia',
-        lastName: 'Marquez',
+        lastName: 'Márquez',
         about: 'Soy porque somos',
         topTitle:
           'Lawyer, Environmental Activist, and Vice-President of Colombia',

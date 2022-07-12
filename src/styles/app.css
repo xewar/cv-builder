@@ -13,7 +13,7 @@
 }
 .mainContainer {
   display: grid;
-  grid-template-columns: clamp(430px, 40vw, 50vw) 1fr;
+  grid-template-columns: clamp(430px, 35vw, 40vw) 1fr;
   height: 100vh;
   width: 100vw;
 }
@@ -112,6 +112,15 @@ button {
   justify-content: space-between;
   gap: 1em;
 }
+.trash {
+  color: white;
+  font-size: 1.7em;
+  text-align: center;
+}
+
+.flipped {
+  transform: scale(-1);
+}
 
 /* PREVIEW (Right-side) */
 .right {
@@ -120,17 +129,19 @@ button {
   justify-content: center;
 }
 .paper {
-  width: 850px;
-  height: 1100px;
+  width: 1000px;
+  height: 1295px;
   background-color: white;
   margin: 2em;
 }
-.flipped {
-  transform: scale(-1);
+.name {
+  font-size: 3em;
+  font-weight: bold;
 }
-
-.trash {
-  color: white;
-  font-size: 1.7em;
-  text-align: center;
+.title {
+  font-size: 1.5em;
+}
+.sectionTitle {
+  font-weight: bold;
+  text-transform: uppercase;
 }
