@@ -6,6 +6,14 @@ import Skills from './Skills';
 import Education from './Education';
 import Work from './Work';
 import uniqid from 'uniqid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFileArrowDown,
+  faSearchPlus,
+  faSearchMinus,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
+
 import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
 
 class Editor extends Component {
@@ -441,6 +449,11 @@ class Editor extends Component {
             degreesObj={this.state.degreesObj}
             jobsObj={this.state.jobsObj}
           />
+          <div class="icons">
+            <FontAwesomeIcon className="zoomIn" icon={faSearchPlus} />
+            <FontAwesomeIcon className="zoomOut" icon={faSearchMinus} />
+            <FontAwesomeIcon className="download" icon={faFileArrowDown} />
+          </div>
         </div>
       </div>
     );
