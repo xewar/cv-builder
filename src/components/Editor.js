@@ -150,7 +150,7 @@ class Editor extends Component {
         start: '',
         end: '',
       };
-    } else if (type === 'job') {
+    } else if (type === 'job' || type === 'jobsDiv') {
       obj = this.state.jobsObj;
       newInstance = {
         id: uniqid(),
@@ -294,9 +294,9 @@ class Editor extends Component {
             email={this.state.email}
             mobile={this.state.mobile}
             city={this.state.city}
-            skillsList={this.state.skillsList}
-            university={this.state.degreesObj[0].university}
-            // jobsObj={this.state.jobsObj}
+            skillsObj={this.state.skillsObj}
+            degreesObj={this.state.degreesObj}
+            jobsObj={this.state.jobsObj}
           />
         </div>
       </div>

@@ -56,7 +56,6 @@ class Work extends Component {
     return (
       <div className="formInput">
         <div className="jobsDiv">{renderJobs}</div>
-
         <button onClick={addNewJob}>+ Add Job</button>
       </div>
     );
