@@ -13,6 +13,7 @@ import {
   faSearchMinus,
   faSearch,
 } from '@fortawesome/free-solid-svg-icons';
+import ReactToPrint from 'react-to-print';
 
 import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
 
@@ -444,20 +445,23 @@ class Editor extends Component {
           </div>
         </div>
         <div className="right">
-          <Preview
-            firstName={this.state.firstName}
-            lastName={this.state.lastName}
-            about={this.state.about}
-            title={this.state.topTitle}
-            twitter={this.state.twitter}
-            website={this.state.website}
-            email={this.state.email}
-            mobile={this.state.mobile}
-            city={this.state.city}
-            skillsObj={this.state.skillsObj}
-            degreesObj={this.state.degreesObj}
-            jobsObj={this.state.jobsObj}
-          />
+          <div className="previewContainer">
+            <Preview
+              ref={el => (this.componentRef = el)}
+              firstName={this.state.firstName}
+              lastName={this.state.lastName}
+              about={this.state.about}
+              title={this.state.topTitle}
+              twitter={this.state.twitter}
+              website={this.state.website}
+              email={this.state.email}
+              mobile={this.state.mobile}
+              city={this.state.city}
+              skillsObj={this.state.skillsObj}
+              degreesObj={this.state.degreesObj}
+              jobsObj={this.state.jobsObj}
+            />
+          </div>
           <div className="icons">
             <FontAwesomeIcon
               className="zoomIn"
@@ -469,10 +473,16 @@ class Editor extends Component {
               onClick={this.zoomOut}
               icon={faSearchMinus}
             />
-            <FontAwesomeIcon
-              className="download"
-              icon={faFileArrowDown}
-              download
+            <ReactToPrint
+              trigger={() => {
+                return (
+                  <FontAwesomeIcon
+                    className="download"
+                    icon={faFileArrowDown}
+                  />
+                );
+              }}
+              content={() => this.componentRef}
             />
           </div>
         </div>

@@ -132,6 +132,8 @@ button {
   width: 1000px;
   height: 1295px;
   background-color: white;
+}
+.previewContainer {
   margin: 2em;
 }
 
