@@ -13,7 +13,8 @@
 }
 .mainContainer {
   display: grid;
-  grid-template-columns: clamp(430px, 35vw, 40vw) 1fr;
+  /* grid-template-columns: clamp(430px, 35vw, 40vw) 1fr; */
+  grid-template-columns: clamp(520px, 35%, 40%) 1fr;
   height: 100vh;
   width: 100vw;
 }
@@ -25,12 +26,10 @@
 .left {
   display: flex;
   margin: auto;
-  min-width: 430px;
 }
 
 .formContainer {
   font-family: Karla;
-
   background-color: var(--accent_6);
   padding: 3.5em 2.5em;
   border-radius: 2%;
@@ -135,12 +134,19 @@ button {
   background-color: white;
   margin: 2em;
 }
+
+.fullSize {
+  zoom: 145%;
+  position: absolute;
+  right: 0;
+}
 .icons {
   display: flex;
   flex-direction: column;
   margin-top: 4em;
   gap: 2em;
 }
+
 .zoomIn,
 .zoomOut,
 .download {

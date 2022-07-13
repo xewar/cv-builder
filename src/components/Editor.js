@@ -24,6 +24,7 @@ class Editor extends Component {
     this.handleChangeObjects = this.handleChangeObjects.bind(this);
     this.addNew = this.addNew.bind(this);
     this.autofill = this.autofill.bind(this);
+    // this.zoomIn = this.zoomIn.bind(this);
     this.deleteInstance = this.deleteInstance.bind(this);
     this.state = {
       firstName: '',
@@ -228,7 +229,7 @@ class Editor extends Component {
         lastName: 'Márquez',
         about: 'Soy porque somos',
         topTitle:
-          'Lawyer, Environmental Activist, and Vice-President of Colombia',
+          'Environmental Activist, Lawyer, and Vice-President of Colombia',
         twitter: '@FranciaMarquezM',
         website: 'franciamarquezmina.co',
         email: 'info@franciamarquezmina',
@@ -355,6 +356,14 @@ class Editor extends Component {
       });
     }
   };
+  zoomIn = () => {
+    let right = document.querySelector('.right');
+    right.classList.add('fullSize');
+  };
+  zoomOut = () => {
+    let right = document.querySelector('.right');
+    right.classList.remove('fullSize');
+  };
 
   render() {
     const displayForm = () => {
@@ -449,10 +458,22 @@ class Editor extends Component {
             degreesObj={this.state.degreesObj}
             jobsObj={this.state.jobsObj}
           />
-          <div class="icons">
-            <FontAwesomeIcon className="zoomIn" icon={faSearchPlus} />
-            <FontAwesomeIcon className="zoomOut" icon={faSearchMinus} />
-            <FontAwesomeIcon className="download" icon={faFileArrowDown} />
+          <div className="icons">
+            <FontAwesomeIcon
+              className="zoomIn"
+              onClick={this.zoomIn}
+              icon={faSearchPlus}
+            />
+            <FontAwesomeIcon
+              className="zoomOut"
+              onClick={this.zoomOut}
+              icon={faSearchMinus}
+            />
+            <FontAwesomeIcon
+              className="download"
+              icon={faFileArrowDown}
+              download
+            />
           </div>
         </div>
       </div>
