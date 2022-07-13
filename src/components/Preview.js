@@ -51,34 +51,37 @@ class Preview extends Component {
     return (
       <div className="cvPreview">
         <div className="paper">
-          <div></div>
-          <div className="personal">
-            <div className="name">
-              {firstName} {lastName}
-            </div>
-            <div className="title">{title}</div>
-            <div className="about"> {about}</div>
-            <div className="twitter">{twitter}</div>
-            <div className="website">{website}</div>
-            <div className="email">{email}</div>
-            <div className="mobile">{mobile}</div>
-            <div className="city">{city}</div>
-            <div className="skills">
-              {/* section title only displayed if there is something filled out */}
-              {skillsObj[0].skill && <div className="sectionTitle">Skills</div>}
-              <div>{displaySkills}</div>
-            </div>
-            <div className="education">
-              {degreesObj[0].university && (
-                <div className="sectionTitle">Education</div>
-              )}
-              <div>{displayDegrees}</div>
-            </div>
-            <div className="work">
-              {jobsObj[0].title && (
-                <div className="sectionTitle">Experience</div>
-              )}
-              <div> {displayJobs}</div>
+          <div className="cvText">
+            <div className="personal">
+              <div className="name">
+                {firstName} {lastName}
+              </div>
+              <div className="title">{title}</div>
+              <div className="about"> {about}</div>
+              <div className="twitter">{twitter}</div>
+              <div className="website">{website}</div>
+              <div className="email">{email}</div>
+              <div className="mobile">{mobile}</div>
+              <div className="city">{city}</div>
+              <div className="skills">
+                {/* section title only displayed if there is something filled out */}
+                {skillsObj[0].skill && (
+                  <div className="sectionTitle">Skills</div>
+                )}
+                <div>{displaySkills}</div>
+              </div>
+              <div className="education">
+                {degreesObj[0].university && (
+                  <div className="sectionTitle">Education</div>
+                )}
+                <div>{displayDegrees}</div>
+              </div>
+              <div className="work">
+                {jobsObj[0].title && (
+                  <div className="sectionTitle">Experience</div>
+                )}
+                <div> {displayJobs}</div>
+              </div>
             </div>
           </div>
         </div>

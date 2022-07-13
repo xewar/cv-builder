@@ -132,6 +132,7 @@ button {
   width: 1000px;
   height: 1295px;
   background-color: white;
+  position: relative;
 }
 .previewContainer {
   margin: 2em;
@@ -165,4 +166,7 @@ button {
 .sectionTitle {
   font-weight: bold;
   text-transform: uppercase;
+}
+.cvText {
+  padding: 3em;
 }
