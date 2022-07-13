@@ -79,7 +79,8 @@ form,
 .formInput,
 .job,
 .degree,
-.skillsDiv {
+.skillsDiv,
+.honorsDiv {
   display: flex;
   flex-direction: column;
   gap: 1.5em;
@@ -87,6 +88,13 @@ form,
 .job,
 .degree {
   margin-bottom: 2em;
+}
+.jobsDiv,
+.degreesDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin-top: 1em;
 }
 
 button {
@@ -156,9 +164,21 @@ button {
   color: white;
   font-size: 2em;
 }
+.cvText {
+  padding: 3em 7em 3em 6em;
+  display: flex;
+  flex-direction: row;
+  gap: 5em;
+}
+
 .name {
   font-size: 3em;
   font-weight: bold;
+}
+.about {
+  margin-top: 0.5em;
+  font-size: 1.5em;
+  font-style: italic;
 }
 .title {
   font-size: 1.5em;
@@ -167,6 +187,57 @@ button {
   font-weight: bold;
   text-transform: uppercase;
 }
-.cvText {
-  padding: 3em;
+.cvLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 15em;
+}
+.cvBottomLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8em;
+}
+
+.cvTopRight {
+  margin-top: 3em;
+}
+.cvBottomRight {
+  margin-top: clamp(5em, 8em, 10em);
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.jobsTop,
+.degreeTop {
+  display: flex;
+  justify-content: space-between;
+}
+.degreeType {
+  font-style: italic;
+}
+.displayDegreesDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin-top: 1em;
+}
+.jobDescription {
+  text-align: justify;
+  margin-top: 0.5em;
+}
+.jobDates,
+.degreeDates {
+  display: flex;
+}
+.organizationTitle {
+  font-style: italic;
+}
+
+.awardsDiv {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
 }

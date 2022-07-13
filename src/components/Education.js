@@ -49,7 +49,7 @@ class Education extends Component {
     });
     return (
       <div className="formInput">
-        <div>{renderDegrees}</div>
+        <div className="degreesDiv">{renderDegrees}</div>
         <button onClick={addNewEducation}>+ Add More</button>
       </div>
     );

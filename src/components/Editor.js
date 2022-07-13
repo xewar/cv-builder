@@ -3,6 +3,7 @@ import Preview from './Preview';
 import Personal from './Personal';
 import Contact from './Contact';
 import Skills from './Skills';
+import Honors from './Honors';
 import Education from './Education';
 import Work from './Work';
 import uniqid from 'uniqid';
@@ -51,6 +52,23 @@ class Editor extends Component {
           skill: '',
         },
       ],
+      honorsObj: [
+        {
+          id: uniqid(),
+          honor: '',
+          year: '',
+        },
+        {
+          id: uniqid(),
+          honor: '',
+          year: '',
+        },
+        {
+          id: uniqid(),
+          honor: '',
+          year: '',
+        },
+      ],
       degreesObj: [
         {
           id: uniqid(),
@@ -70,7 +88,14 @@ class Editor extends Component {
           description: '',
         },
       ],
-      formElements: ['personal', 'contact', 'skills', 'education', 'work'],
+      formElements: [
+        'personal',
+        'contact',
+        'skills',
+        'education',
+        'work',
+        'honors',
+      ],
       currentForm: 'personal',
       nextForm: 'contact',
       prevForm: '',
@@ -95,6 +120,8 @@ class Editor extends Component {
       obj = this.state.jobsObj;
     } else if (type === 'skillsDiv') {
       obj = this.state.skillsObj;
+    } else if (type === 'honorsDiv') {
+      obj = this.state.honorsObj;
     } else {
       obj = this.state.degreesObj;
     }
@@ -115,6 +142,7 @@ class Editor extends Component {
   addNew(event) {
     event.preventDefault();
     let type = event.target.textContent;
+    console.log('here', type);
     let obj; //
     let newInstance; //new instance of the object
     if (type === '+ Add More') {
@@ -136,6 +164,13 @@ class Editor extends Component {
         end: '',
         description: '',
       };
+    } else if (type === '+ Add Award') {
+      obj = this.state.honorsObj;
+      newInstance = {
+        id: uniqid(),
+        year: '',
+        honor: '',
+      };
     } else {
       obj = this.state.skillsObj;
       newInstance = {
@@ -155,7 +190,7 @@ class Editor extends Component {
     //get the id of the specific job or degree to delete
     let id = event.target.parentNode.parentNode.parentNode.parentNode.id;
     let newInstance;
-    if (type === 'degree') {
+    if (type === 'degree' || type === 'degreesDiv') {
       obj = this.state.degreesObj;
       newInstance = {
         id: uniqid(),
@@ -211,7 +246,7 @@ class Editor extends Component {
         showLeftButton: true,
       });
     }
-    if (newIndex === 4) {
+    if (newIndex === 5) {
       this.setState({
         showRightButton: false,
       });
@@ -265,6 +300,13 @@ class Editor extends Component {
         degreesObj: [
           {
             id: uniqid(),
+            university: 'Universidad ICESI',
+            degreeType: 'BA in Creative Writing',
+            start: '2021',
+            end: 'Present',
+          },
+          {
+            id: uniqid(),
             university: 'Universidad Santiago de Cali',
             degreeType: 'J.D',
             start: '2017',
@@ -284,6 +326,18 @@ class Editor extends Component {
           enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat.`,
           },
+          {
+            id: uniqid(),
+            organization: 'Asociación de Mujeres Afrodescendientes de Yolombó',
+            title: 'President',
+            start: '2010',
+            end: '2013',
+            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+          enim ad minim veniam, quis nostrud exercitation ullamco laboris
+          nisi ut aliquip ex ea commodo consequat.`,
+          },
+
           {
             id: uniqid(),
             organization:
@@ -306,6 +360,23 @@ class Editor extends Component {
            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
            cupidatat non proident, sunt in culpa qui officia deserunt
            mollit anim id est laborum.`,
+          },
+        ],
+        honorsObj: [
+          {
+            id: uniqid(),
+            honor: `BBC's most influential woman`,
+            year: '2019',
+          },
+          {
+            id: uniqid(),
+            honor: 'Goldman Environmental Prize',
+            year: '2018',
+          },
+          {
+            id: uniqid(),
+            honor: 'Colombian National Prize for the Defense of Human Rights',
+            year: '2015',
           },
         ],
       });
@@ -352,6 +423,23 @@ class Editor extends Component {
             start: '',
             end: '',
             description: '',
+          },
+        ],
+        honorsObj: [
+          {
+            id: uniqid(),
+            honor: '',
+            year: '',
+          },
+          {
+            id: uniqid(),
+            honor: '',
+            year: '',
+          },
+          {
+            id: uniqid(),
+            honor: '',
+            year: '',
           },
         ],
       });
@@ -415,6 +503,14 @@ class Editor extends Component {
             deleteJob={this.deleteInstance}
           />
         );
+      } else if (this.state.currentForm === 'honors') {
+        return (
+          <Honors
+            honorsObj={this.state.honorsObj}
+            handleChange={this.handleChangeObjects}
+            addHonor={this.addNew}
+          />
+        );
       }
     };
     return (
@@ -460,6 +556,7 @@ class Editor extends Component {
               skillsObj={this.state.skillsObj}
               degreesObj={this.state.degreesObj}
               jobsObj={this.state.jobsObj}
+              honorsObj={this.state.honorsObj}
             />
           </div>
           <div className="icons">

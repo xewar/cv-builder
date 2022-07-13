@@ -19,6 +19,7 @@ class Preview extends Component {
       skillsObj,
       jobsObj,
       degreesObj,
+      honorsObj,
     } = this.props;
     const displaySkills = skillsObj.map(skill => {
       return (
@@ -27,13 +28,24 @@ class Preview extends Component {
         </div>
       );
     });
+    const displayHonors = honorsObj.map(honor => {
+      return (
+        <div className="honor" key={uniqid()}>
+          {honor.honor}, {honor.year}
+        </div>
+      );
+    });
     const displayJobs = jobsObj.map(job => {
       return (
         <div className="jobPreview" key={uniqid()}>
-          <div className="jobTitle">{job.title}</div>
+          <div className="jobsTop">
+            <div className="jobTitle">{job.title}</div>
+            <div className="jobDates">
+              {job.start} - {job.end}
+            </div>
+          </div>
           <div className="organizationTitle">{job.organization}</div>
-          <div className="jobStart">{job.start}</div>
-          <div className="jobEnd">{job.end}</div>
+
           <div className="jobDescription">{job.description}</div>
         </div>
       );
@@ -41,10 +53,13 @@ class Preview extends Component {
     const displayDegrees = degreesObj.map(degree => {
       return (
         <div className="degreePreview" key={uniqid()}>
-          <div className="degreeType">{degree.degreeType}</div>
+          <div className="degreeTop">
+            <div className="degreeType">{degree.degreeType}</div>
+            <div className="degreeDates">
+              {degree.start} - {degree.end}
+            </div>
+          </div>
           <div className="university">{degree.university}</div>
-          <div className="degreeStart">{degree.start}</div>
-          <div className="degreeEnd">{degree.end}</div>
         </div>
       );
     });
@@ -52,35 +67,55 @@ class Preview extends Component {
       <div className="cvPreview">
         <div className="paper">
           <div className="cvText">
-            <div className="personal">
-              <div className="name">
-                {firstName} {lastName}
+            <div className="cvLeft">
+              <div className="topLeft">
+                <div className="name">
+                  {firstName} {lastName}
+                </div>
+                <div className="about"> {about}</div>
               </div>
-              <div className="title">{title}</div>
-              <div className="about"> {about}</div>
-              <div className="twitter">{twitter}</div>
-              <div className="website">{website}</div>
-              <div className="email">{email}</div>
-              <div className="mobile">{mobile}</div>
-              <div className="city">{city}</div>
-              <div className="skills">
-                {/* section title only displayed if there is something filled out */}
-                {skillsObj[0].skill && (
-                  <div className="sectionTitle">Skills</div>
-                )}
-                <div>{displaySkills}</div>
+              <div className="cvBottomLeft">
+                <div className="contact">
+                  <div className="twitter">{twitter}</div>
+                  <div className="website">{website}</div>
+                  <div className="email">{email}</div>
+                  <div className="mobile">{mobile}</div>
+                  <div className="city">{city}</div>
+                </div>
+                <div className="skills">
+                  {/* section title only displayed if there is something filled out */}
+                  {skillsObj[0].skill && (
+                    <div className="sectionTitle">Skills</div>
+                  )}
+                  <div>{displaySkills}</div>
+                </div>
               </div>
-              <div className="education">
-                {degreesObj[0].university && (
-                  <div className="sectionTitle">Education</div>
-                )}
-                <div>{displayDegrees}</div>
+            </div>
+            <div class="cvRight">
+              <div className="cvTopRight">
+                <div className="title">{title}</div>
               </div>
-              <div className="work">
+              <div className="cvBottomRight">
                 {jobsObj[0].title && (
-                  <div className="sectionTitle">Experience</div>
+                  <div className="work">
+                    <div className="sectionTitle">Experience</div>
+                    <div className="jobsDiv"> {displayJobs}</div>
+                  </div>
                 )}
-                <div> {displayJobs}</div>
+                {degreesObj[0].university && (
+                  <div className="education">
+                    <div className="sectionTitle">Education</div>
+
+                    <div className="displayDegreesDiv">{displayDegrees}</div>
+                  </div>
+                )}
+                {honorsObj[0].honor && (
+                  <div className="honors">
+                    <div className="sectionTitle">Awards and Honors</div>
+
+                    <div className="awardsDiv">{displayHonors}</div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
