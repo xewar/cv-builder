@@ -54,12 +54,12 @@ class Preview extends Component {
       return (
         <div className="degreePreview" key={uniqid()}>
           <div className="degreeTop">
-            <div className="degreeType">{degree.degreeType}</div>
+            <div className="university">{degree.university}</div>
             <div className="degreeDates">
               {degree.start} - {degree.end}
             </div>
           </div>
-          <div className="university">{degree.university}</div>
+          <div className="degreeType">{degree.degreeType}</div>
         </div>
       );
     });
