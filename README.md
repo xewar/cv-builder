@@ -7,5 +7,6 @@ See the live project [here](https://xewar.github.io/cv-builder/).
 This was my first React project, created to reinforce my learning about React fundamentals.
 
 **Some resources I found helpful**
-- (React to Print)[https://www.npmjs.com/package/react-to-print]
-- This free intro [React course](https://scrimba.com/learn/learnreact/) from Scrimba
+- The project was bootstrapped with [Create React App](https://create-react-app.dev/)
+- I used [React to Print](https://www.npmjs.com/package/react-to-print) to enable saving a PDF of the CV
+- This free intro [React course](https://scrimba.com/learn/learnreact/) from Scrimba helped me better understand state management
