@@ -13,12 +13,13 @@
 }
 .mainContainer {
   display: grid;
-  /* grid-template-columns: clamp(430px, 35vw, 40vw) 1fr; */
-  grid-template-columns: clamp(520px, 35%, 40%) 1fr;
+  grid-template-columns: clamp(416px, 35%, 40%) 1fr;
   height: 100vh;
   width: 100vw;
 }
-
+body {
+  font-size: 80%;
+}
 /* EDITOR (Left Side) */
 .parent {
   display: grid;
@@ -36,7 +37,7 @@
   display: flex;
   flex-direction: column;
   gap: 2em;
-  width: 440px;
+  width: 352px;
   box-shadow: -5px -5px var(--accent_1), 5px 5px var(--accent_7);
 }
 
@@ -68,7 +69,7 @@ form ::placeholder {
   font-family: Karla;
 }
 .dates {
-  width: 400px;
+  width: 320px;
   display: flex;
   flex-direction: row;
   gap: 2em;
@@ -137,8 +138,8 @@ button {
   flex-direction: row;
 }
 .paper {
-  width: 1000px;
-  height: 1295px;
+  width: 800px;
+  height: 1036px;
   background-color: white;
   position: relative;
 }

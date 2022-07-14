@@ -1,7 +1,7 @@
 {
   "name": "cv-builder",
   "version": "0.1.0",
-  "homepage": "http://xewar.github.io/cv-builder",
+  "homepage": "https://xewar.github.io/cv-builder",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
