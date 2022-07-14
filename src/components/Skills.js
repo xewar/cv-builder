@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import uniqid from 'uniqid';
 
 class Skills extends Component {
   constructor(props) {
