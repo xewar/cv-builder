@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useRef } from 'react';
 import Preview from './Preview';
 import Personal from './Personal';
 import Contact from './Contact';
@@ -12,118 +12,109 @@ import {
   faFileArrowDown,
   faSearchPlus,
   faSearchMinus,
-  faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import ReactToPrint from 'react-to-print';
 
-import { toHaveAccessibleDescription } from '@testing-library/jest-dom/dist/matchers';
+const Editor = props => {
+  const [info, setInfo] = useState({
+    firstName: '',
+    lastName: '',
+    about: '',
+    topTitle: '',
+    twitter: '',
+    website: '',
+    email: '',
+    mobile: '',
+    city: '',
+    skillsObj: [
+      {
+        id: uniqid(),
+        skill: '',
+      },
+      {
+        id: uniqid(),
+        skill: '',
+      },
+      {
+        id: uniqid(),
+        skill: '',
+      },
+    ],
+    honorsObj: [
+      {
+        id: uniqid(),
+        honor: '',
+        year: '',
+      },
+      {
+        id: uniqid(),
+        honor: '',
+        year: '',
+      },
+      {
+        id: uniqid(),
+        honor: '',
+        year: '',
+      },
+    ],
+    degreesObj: [
+      {
+        id: uniqid(),
+        university: '',
+        degreeType: '',
+        start: '',
+        end: '',
+      },
+    ],
+    jobsObj: [
+      {
+        id: uniqid(),
+        organization: '',
+        title: '',
+        start: '',
+        end: '',
+        description: '',
+      },
+    ],
+    formElements: [
+      'personal',
+      'contact',
+      'skills',
+      'education',
+      'work',
+      'honors',
+    ],
+    currentForm: 'personal',
+    nextForm: 'contact',
+    prevForm: '',
+    showLeftButton: false,
+    showRightButton: true,
+    autofillClearButton: 'auto-fill',
+  });
 
-class Editor extends Component {
-  constructor(props) {
-    super(props);
-    this.switchForm = this.switchForm.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeObjects = this.handleChangeObjects.bind(this);
-    this.addNew = this.addNew.bind(this);
-    this.autofill = this.autofill.bind(this);
-    // this.zoomIn = this.zoomIn.bind(this);
-    this.deleteInstance = this.deleteInstance.bind(this);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      about: '',
-      topTitle: '',
-      twitter: '',
-      website: '',
-      email: '',
-      mobile: '',
-      city: '',
-      skillsObj: [
-        {
-          id: uniqid(),
-          skill: '',
-        },
-        {
-          id: uniqid(),
-          skill: '',
-        },
-        {
-          id: uniqid(),
-          skill: '',
-        },
-      ],
-      honorsObj: [
-        {
-          id: uniqid(),
-          honor: '',
-          year: '',
-        },
-        {
-          id: uniqid(),
-          honor: '',
-          year: '',
-        },
-        {
-          id: uniqid(),
-          honor: '',
-          year: '',
-        },
-      ],
-      degreesObj: [
-        {
-          id: uniqid(),
-          university: '',
-          degreeType: '',
-          start: '',
-          end: '',
-        },
-      ],
-      jobsObj: [
-        {
-          id: uniqid(),
-          organization: '',
-          title: '',
-          start: '',
-          end: '',
-          description: '',
-        },
-      ],
-      formElements: [
-        'personal',
-        'contact',
-        'skills',
-        'education',
-        'work',
-        'honors',
-      ],
-      currentForm: 'personal',
-      nextForm: 'contact',
-      prevForm: '',
-      showLeftButton: false,
-      showRightButton: true,
-      autofillClearButton: 'auto-fill',
-    };
-  }
-  handleChange(event) {
+  function handleChange(event) {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value,
+    setInfo(prevInfo => {
+      return {
+        ...prevInfo,
+        [name]: value,
+      };
     });
   }
 
   //updates the work, education, and skills forms as you type
-  handleChangeObjects(event) {
+  function handleChangeObjects(event) {
     let type = event.target.parentNode.parentNode.className;
     let obj;
     let id;
     if (type === 'job' || type === 'jobsDiv') {
-      obj = this.state.jobsObj;
+      obj = info.jobsObj;
     } else if (type === 'skillsDiv') {
-      obj = this.state.skillsObj;
+      obj = info.skillsObj;
     } else if (type === 'honorsDiv') {
-      obj = this.state.honorsObj;
+      obj = info.honorsObj;
     } else {
-      obj = this.state.degreesObj;
+      obj = info.degreesObj;
     }
     if (event.target.name === 'start' || event.target.name === 'end') {
       //date elements are nested differently in the form
@@ -135,18 +126,22 @@ class Editor extends Component {
     let currentIndex = obj.findIndex(item => item.id === id);
     let updatedItem = { ...obj[currentIndex], [name]: value };
     obj[currentIndex] = updatedItem;
-    this.setState({ obj });
+    setInfo(prevInfo => {
+      return {
+        ...prevInfo,
+        [obj]: obj,
+      };
+    });
   }
 
   //add a new job, degree, or skill
-  addNew(event) {
+  function addNew(event) {
     event.preventDefault();
     let type = event.target.textContent;
-    console.log('here', type);
     let obj; //
     let newInstance; //new instance of the object
     if (type === '+ Add More') {
-      obj = this.state.degreesObj;
+      obj = info.degreesObj;
       newInstance = {
         id: uniqid(),
         university: '',
@@ -155,7 +150,7 @@ class Editor extends Component {
         end: '',
       };
     } else if (type === '+ Add Job') {
-      obj = this.state.jobsObj;
+      obj = info.jobsObj;
       newInstance = {
         id: uniqid(),
         organization: '',
@@ -165,25 +160,30 @@ class Editor extends Component {
         description: '',
       };
     } else if (type === '+ Add Award') {
-      obj = this.state.honorsObj;
+      obj = info.honorsObj;
       newInstance = {
         id: uniqid(),
         year: '',
         honor: '',
       };
     } else {
-      obj = this.state.skillsObj;
+      obj = info.skillsObj;
       newInstance = {
         id: uniqid(),
         skill: '',
       };
     }
     obj.push(newInstance);
-    this.setState({ obj });
+    setInfo(prevInfo => {
+      return {
+        ...prevInfo,
+        [obj]: obj,
+      };
+    });
   }
 
   //deleting a job or degree with the trash icon
-  deleteInstance(event) {
+  function deleteInstance(event) {
     let type =
       event.target.parentNode.parentNode.parentNode.parentNode.className;
     let obj; //object to be updated (either jobs or education)
@@ -191,7 +191,7 @@ class Editor extends Component {
     let id = event.target.parentNode.parentNode.parentNode.parentNode.id;
     let newInstance;
     if (type === 'degree' || type === 'degreesDiv') {
-      obj = this.state.degreesObj;
+      obj = info.degreesObj;
       newInstance = {
         id: uniqid(),
         university: '',
@@ -200,7 +200,7 @@ class Editor extends Component {
         end: '',
       };
     } else if (type === 'job' || type === 'jobsDiv') {
-      obj = this.state.jobsObj;
+      obj = info.jobsObj;
       newInstance = {
         id: uniqid(),
         organization: '',
@@ -217,14 +217,19 @@ class Editor extends Component {
       obj.push(newInstance);
     }
     obj.splice(currentIndex, 1);
-    this.setState({ obj });
+    setInfo(prevInfo => {
+      return {
+        ...prevInfo,
+        [obj]: obj,
+      };
+    });
   }
 
-  switchForm(event) {
+  function switchForm(event) {
     //changes the form that's displayed
     let direction = event.target.className.slice(6); //'Right' or 'Left'
-    let currentIndex = this.state.formElements.findIndex(
-      item => item === this.state.currentForm
+    let currentIndex = info.formElements.findIndex(
+      item => item === info.currentForm
     );
     let newIndex;
     if (direction === 'Right') {
@@ -232,359 +237,377 @@ class Editor extends Component {
     } else {
       newIndex = currentIndex - 1;
     }
-    this.setState({
-      currentForm: this.state.formElements[newIndex],
-      nextForm: this.state.formElements[newIndex + 1],
-      prevForm: this.state.formElements[newIndex - 1],
+    setInfo(prevInfo => {
+      return {
+        ...prevInfo,
+        currentForm: info.formElements[newIndex],
+        nextForm: info.formElements[newIndex + 1],
+        prevForm: info.formElements[newIndex - 1],
+      };
     });
     if (newIndex === 0) {
-      this.setState({
-        showLeftButton: false,
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          showLeftButton: false,
+        };
       });
     } else {
-      this.setState({
-        showLeftButton: true,
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          showLeftButton: true,
+        };
       });
     }
     if (newIndex === 5) {
-      this.setState({
-        showRightButton: false,
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          showRightButton: false,
+        };
       });
     } else {
-      this.setState({
-        showRightButton: true,
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          showRightButton: true,
+        };
       });
     }
   }
-  autofill = event => {
+  function autofill(event) {
     let mode = event.target.textContent;
     if (mode === 'auto-fill') {
-      this.setState({
-        autofillClearButton: 'clear',
-        firstName: 'Francia',
-        lastName: 'Márquez',
-        about: 'Soy porque somos',
-        topTitle:
-          'Environmental Activist, Lawyer, and Vice-President of Colombia',
-        twitter: '@FranciaMarquezM',
-        website: 'franciamarquezmina.co',
-        email: 'info@franciamarquezmina',
-        mobile: '',
-        city: 'Bogotá, Colombia',
-        skillsObj: [
-          {
-            id: uniqid(),
-            skill: 'Javascript',
-          },
-          {
-            id: uniqid(),
-            skill: 'React',
-          },
-          {
-            id: uniqid(),
-            skill: 'Node.js',
-          },
-          {
-            id: uniqid(),
-            skill: 'Express',
-          },
-          {
-            id: uniqid(),
-            skill: 'HTML',
-          },
-          {
-            id: uniqid(),
-            skill: 'CSS',
-          },
-        ],
-        degreesObj: [
-          {
-            id: uniqid(),
-            university: 'Universidad ICESI',
-            degreeType: 'BA in Creative Writing',
-            start: '2021',
-            end: 'Present',
-          },
-          {
-            id: uniqid(),
-            university: 'Universidad Santiago de Cali',
-            degreeType: 'J.D',
-            start: '2017',
-            end: '2020',
-          },
-        ],
-        jobsObj: [
-          {
-            id: uniqid(),
-            organization:
-              'the National Peace, Reconciliation, and Coexistence Committee',
-            title: 'President',
-            start: '2021',
-            end: 'Present',
-            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          autofillClearButton: 'clear',
+          firstName: 'Francia',
+          lastName: 'Márquez',
+          about: 'Soy porque somos',
+          topTitle:
+            'Environmental Activist, Lawyer, and Vice-President of Colombia',
+          twitter: '@FranciaMarquezM',
+          website: 'franciamarquezmina.co',
+          email: 'info@franciamarquezmina',
+          mobile: '',
+          city: 'Bogotá, Colombia',
+          skillsObj: [
+            {
+              id: uniqid(),
+              skill: 'Javascript',
+            },
+            {
+              id: uniqid(),
+              skill: 'React',
+            },
+            {
+              id: uniqid(),
+              skill: 'Node.js',
+            },
+            {
+              id: uniqid(),
+              skill: 'Express',
+            },
+            {
+              id: uniqid(),
+              skill: 'HTML',
+            },
+            {
+              id: uniqid(),
+              skill: 'CSS',
+            },
+          ],
+          degreesObj: [
+            {
+              id: uniqid(),
+              university: 'Universidad ICESI',
+              degreeType: 'BA in Creative Writing',
+              start: '2021',
+              end: 'Present',
+            },
+            {
+              id: uniqid(),
+              university: 'Universidad Santiago de Cali',
+              degreeType: 'J.D',
+              start: '2017',
+              end: '2020',
+            },
+          ],
+          jobsObj: [
+            {
+              id: uniqid(),
+              organization:
+                'the National Peace, Reconciliation, and Coexistence Committee',
+              title: 'President',
+              start: '2021',
+              end: 'Present',
+              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
           enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat.`,
-          },
-          {
-            id: uniqid(),
-            organization: 'Asociación de Mujeres Afrodescendientes de Yolombó',
-            title: 'President',
-            start: '2010',
-            end: '2013',
-            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            },
+            {
+              id: uniqid(),
+              organization:
+                'Asociación de Mujeres Afrodescendientes de Yolombó',
+              title: 'President',
+              start: '2010',
+              end: '2013',
+              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
           enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat.`,
-          },
+            },
 
-          {
-            id: uniqid(),
-            organization:
-              'Association of Community Councils of the North of Cauca (ACONC)',
-            title: 'Activist',
-            start: '1997',
-            end: 'Present',
-            description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            {
+              id: uniqid(),
+              organization:
+                'Association of Community Councils of the North of Cauca (ACONC)',
+              title: 'Activist',
+              start: '1997',
+              end: 'Present',
+              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
           enim ad minim veniam, quis nostrud exercitation ullamco laboris
           nisi ut aliquip ex ea commodo consequat.`,
-          },
-          {
-            id: uniqid(),
-            organization: 'Black Communities Process Organization (PCN)',
-            title: 'Active Member',
-            start: '1997',
-            end: 'Present',
-            description: `Duis aute irure dolor in reprehenderit in voluptate velit esse
+            },
+            {
+              id: uniqid(),
+              organization: 'Black Communities Process Organization (PCN)',
+              title: 'Active Member',
+              start: '1997',
+              end: 'Present',
+              description: `Duis aute irure dolor in reprehenderit in voluptate velit esse
            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
            cupidatat non proident, sunt in culpa qui officia deserunt
            mollit anim id est laborum.`,
-          },
-        ],
-        honorsObj: [
-          {
-            id: uniqid(),
-            honor: `BBC's most influential woman`,
-            year: '2019',
-          },
-          {
-            id: uniqid(),
-            honor: 'Goldman Environmental Prize',
-            year: '2018',
-          },
-          {
-            id: uniqid(),
-            honor: 'Colombian National Prize for the Defense of Human Rights',
-            year: '2015',
-          },
-        ],
+            },
+          ],
+          honorsObj: [
+            {
+              id: uniqid(),
+              honor: `BBC's most influential woman`,
+              year: '2019',
+            },
+            {
+              id: uniqid(),
+              honor: 'Goldman Environmental Prize',
+              year: '2018',
+            },
+            {
+              id: uniqid(),
+              honor: 'Colombian National Prize for the Defense of Human Rights',
+              year: '2015',
+            },
+          ],
+        };
       });
     } else {
-      this.setState({
-        autofillClearButton: 'auto-fill',
-        firstName: '',
-        lastName: '',
-        about: '',
-        topTitle: '',
-        twitter: '',
-        website: '',
-        email: '',
-        mobile: '',
-        city: '',
-        skillsObj: [
-          {
-            id: uniqid(),
-            skill: '',
-          },
-          {
-            id: uniqid(),
-            skill: '',
-          },
-          {
-            id: uniqid(),
-            skill: '',
-          },
-        ],
-        degreesObj: [
-          {
-            id: uniqid(),
-            university: '',
-            degreeType: '',
-            start: '',
-            end: '',
-          },
-        ],
-        jobsObj: [
-          {
-            id: uniqid(),
-            organization: '',
-            title: '',
-            start: '',
-            end: '',
-            description: '',
-          },
-        ],
-        honorsObj: [
-          {
-            id: uniqid(),
-            honor: '',
-            year: '',
-          },
-          {
-            id: uniqid(),
-            honor: '',
-            year: '',
-          },
-          {
-            id: uniqid(),
-            honor: '',
-            year: '',
-          },
-        ],
+      setInfo(prevInfo => {
+        return {
+          ...prevInfo,
+          autofillClearButton: 'auto-fill',
+          firstName: '',
+          lastName: '',
+          about: '',
+          topTitle: '',
+          twitter: '',
+          website: '',
+          email: '',
+          mobile: '',
+          city: '',
+          skillsObj: [
+            {
+              id: uniqid(),
+              skill: '',
+            },
+            {
+              id: uniqid(),
+              skill: '',
+            },
+            {
+              id: uniqid(),
+              skill: '',
+            },
+          ],
+          degreesObj: [
+            {
+              id: uniqid(),
+              university: '',
+              degreeType: '',
+              start: '',
+              end: '',
+            },
+          ],
+          jobsObj: [
+            {
+              id: uniqid(),
+              organization: '',
+              title: '',
+              start: '',
+              end: '',
+              description: '',
+            },
+          ],
+          honorsObj: [
+            {
+              id: uniqid(),
+              honor: '',
+              year: '',
+            },
+            {
+              id: uniqid(),
+              honor: '',
+              year: '',
+            },
+            {
+              id: uniqid(),
+              honor: '',
+              year: '',
+            },
+          ],
+        };
       });
     }
-  };
-  zoomIn = () => {
+  }
+  const zoomIn = () => {
     let right = document.querySelector('.right');
     right.classList.add('fullSize');
   };
-  zoomOut = () => {
+  const zoomOut = () => {
     let right = document.querySelector('.right');
     right.classList.remove('fullSize');
   };
+  const componentRef = useRef();
 
-  render() {
-    const displayForm = () => {
-      if (this.state.currentForm === 'personal') {
-        return (
-          <Personal
-            firstName={this.state.firstName}
-            lastName={this.state.lastName}
-            about={this.state.about}
-            title={this.state.topTitle}
-            handleChange={this.handleChange}
-          />
-        );
-      } else if (this.state.currentForm === 'contact') {
-        return (
-          <Contact
-            twitter={this.state.twitter}
-            website={this.state.website}
-            email={this.state.email}
-            mobile={this.state.mobile}
-            city={this.state.city}
-            handleChange={this.handleChange}
-          />
-        );
-      } else if (this.state.currentForm === 'skills') {
-        return (
-          <Skills
-            skillsObj={this.state.skillsObj}
-            handleChange={this.handleChangeObjects}
-            addSkill={this.addNew}
-          />
-        );
-      } else if (this.state.currentForm === 'education') {
-        return (
-          <Education
-            degreesObj={this.state.degreesObj}
-            handleChange={this.handleChangeObjects}
-            addNewEducation={this.addNew}
-            deleteEducation={this.deleteInstance}
-          />
-        );
-      } else if (this.state.currentForm === 'work') {
-        return (
-          <Work
-            jobsObj={this.state.jobsObj}
-            handleChange={this.handleChangeObjects}
-            addNewJob={this.addNew}
-            deleteJob={this.deleteInstance}
-          />
-        );
-      } else if (this.state.currentForm === 'honors') {
-        return (
-          <Honors
-            honorsObj={this.state.honorsObj}
-            handleChange={this.handleChangeObjects}
-            addHonor={this.addNew}
-          />
-        );
-      }
-    };
-    return (
-      <div className="mainContainer">
-        <div className="left">
-          <div className="formContainer">
-            <form className="form">{displayForm()}</form>
-            <div className="bottom">
-              <div>
-                {this.state.showLeftButton && (
-                  <button className="buttonLeft" onClick={this.switchForm}>
-                    {this.state.prevForm} &nbsp;{' '}
-                    <span className="flipped">&#x27A1;</span>
-                  </button>
-                )}
-              </div>
-              <button className="autofill" onClick={this.autofill}>
-                {this.state.autofillClearButton}
-              </button>
-              <div>
-                {this.state.showRightButton && (
-                  <button className="buttonRight" onClick={this.switchForm}>
-                    &#x27A1; &nbsp; {this.state.nextForm}
-                  </button>
-                )}
-              </div>
+  const displayForm = () => {
+    if (info.currentForm === 'personal') {
+      return (
+        <Personal
+          firstName={info.firstName}
+          lastName={info.lastName}
+          about={info.about}
+          title={info.topTitle}
+          handleChange={handleChange}
+        />
+      );
+    } else if (info.currentForm === 'contact') {
+      return (
+        <Contact
+          twitter={info.twitter}
+          website={info.website}
+          email={info.email}
+          mobile={info.mobile}
+          city={info.city}
+          handleChange={handleChange}
+        />
+      );
+    } else if (info.currentForm === 'skills') {
+      return (
+        <Skills
+          skillsObj={info.skillsObj}
+          handleChange={handleChangeObjects}
+          addSkill={addNew}
+        />
+      );
+    } else if (info.currentForm === 'education') {
+      return (
+        <Education
+          degreesObj={info.degreesObj}
+          handleChange={handleChangeObjects}
+          addNewEducation={addNew}
+          deleteEducation={deleteInstance}
+        />
+      );
+    } else if (info.currentForm === 'work') {
+      return (
+        <Work
+          jobsObj={info.jobsObj}
+          handleChange={handleChangeObjects}
+          addNewJob={addNew}
+          deleteJob={deleteInstance}
+        />
+      );
+    } else if (info.currentForm === 'honors') {
+      return (
+        <Honors
+          honorsObj={info.honorsObj}
+          handleChange={handleChangeObjects}
+          addHonor={addNew}
+        />
+      );
+    }
+  };
+  return (
+    <div className="mainContainer">
+      <div className="left">
+        <div className="formContainer">
+          <form className="form">{displayForm()}</form>
+          <div className="bottom">
+            <div>
+              {info.showLeftButton && (
+                <button className="buttonLeft" onClick={switchForm}>
+                  {info.prevForm} &nbsp;{' '}
+                  <span className="flipped">&#x27A1;</span>
+                </button>
+              )}
+            </div>
+            <button className="autofill" onClick={autofill}>
+              {info.autofillClearButton}
+            </button>
+            <div>
+              {info.showRightButton && (
+                <button className="buttonRight" onClick={switchForm}>
+                  &#x27A1; &nbsp; {info.nextForm}
+                </button>
+              )}
             </div>
           </div>
         </div>
-        <div className="right">
-          <div className="previewContainer">
-            <Preview
-              ref={el => (this.componentRef = el)}
-              firstName={this.state.firstName}
-              lastName={this.state.lastName}
-              about={this.state.about}
-              title={this.state.topTitle}
-              twitter={this.state.twitter}
-              website={this.state.website}
-              email={this.state.email}
-              mobile={this.state.mobile}
-              city={this.state.city}
-              skillsObj={this.state.skillsObj}
-              degreesObj={this.state.degreesObj}
-              jobsObj={this.state.jobsObj}
-              honorsObj={this.state.honorsObj}
-            />
-          </div>
-          <div className="icons">
-            <FontAwesomeIcon
-              className="zoomIn"
-              onClick={this.zoomIn}
-              icon={faSearchPlus}
-            />
-            <FontAwesomeIcon
-              className="zoomOut"
-              onClick={this.zoomOut}
-              icon={faSearchMinus}
-            />
-            <ReactToPrint
-              trigger={() => {
-                return (
-                  <FontAwesomeIcon
-                    className="download"
-                    icon={faFileArrowDown}
-                  />
-                );
-              }}
-              content={() => this.componentRef}
-            />
-          </div>
+      </div>
+      <div className="right">
+        <div className="previewContainer">
+          <Preview
+            refs={componentRef}
+            firstName={info.firstName}
+            lastName={info.lastName}
+            about={info.about}
+            title={info.topTitle}
+            twitter={info.twitter}
+            website={info.website}
+            email={info.email}
+            mobile={info.mobile}
+            city={info.city}
+            skillsObj={info.skillsObj}
+            degreesObj={info.degreesObj}
+            jobsObj={info.jobsObj}
+            honorsObj={info.honorsObj}
+          />
+        </div>
+        <div className="icons">
+          <FontAwesomeIcon
+            className="zoomIn"
+            onClick={zoomIn}
+            icon={faSearchPlus}
+          />
+          <FontAwesomeIcon
+            className="zoomOut"
+            onClick={zoomOut}
+            icon={faSearchMinus}
+          />
+          <ReactToPrint
+            trigger={() => {
+              return (
+                <FontAwesomeIcon className="download" icon={faFileArrowDown} />
+              );
+            }}
+            content={() => componentRef.current}
+          />
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 export default Editor;
